@@ -1,20 +1,32 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 
 namespace httpclientMessage
 {
-    public class JSON
+    public class JSONstring
     {
-        public List<int> task { get; set; }
         public int type { get; set; }
         public string description { get; set; }
+        public string task { get; set; }
+    }
+    public class JSONtype
+    {
+        public int type { get; set; }
+    }
+    public class JSONint
+    {
+
+        public int type { get; set; }
+        public string description { get; set; }
+        public List<int> task { get; set; }
     }
     class Request
     {
-        public List<int> num { get; set; }
         static void request1()
         {
             try
@@ -204,9 +216,10 @@ namespace httpclientMessage
         }*/
         static async void request3()
         {
-            JSON something;
-
-            for (int a = 0; a < 20; a++)
+            JSONint somethingint;
+            JSONtype somethingType;
+            //JSONstring somethingstring;
+            for (int a = 0; a < 49; a++)
             {
                 int x = 0;
                 Dictionary<string, int> diction = new Dictionary<string, int>();
@@ -222,19 +235,27 @@ namespace httpclientMessage
                         var ResponContent = respone.Content;
                         string responseString = ResponContent.ReadAsStringAsync().Result;
                         Console.WriteLine("Ответ: {0}", responseString);
-                        something = JsonConvert.DeserializeObject<JSON>(responseString);
+                        somethingint = JsonConvert.DeserializeObject<JSONint>(responseString);
+                        somethingType = JsonConvert.DeserializeObject<JSONtype>(responseString);
+                        //somethingstring = JsonConvert.DeserializeObject<JSONstring>(responseString);
+
+                        Console.WriteLine(somethingType.type);
                         //Console.WriteLine("{0}, {1}", something.task[0], something.task[1]);
-                        if (something.type == 1)
+                        if (somethingType.type == 1)
                         {
-                            diction.Add("response", something.task[0] + something.task[1]);
+                            diction.Add("response", somethingint.task[0] + somethingint.task[1]);
                         }
-                        else if (something.type == 2)
+                        else if (somethingType.type == 2)
                         {
-                            foreach (int list in something.task)
+                            foreach (int list in somethingint.task)
                             {
                                 x = list + x;
                             }
                             diction.Add("response", x);
+                        }
+                        else if (somethingType.type == 3)
+                        {
+                            diction.Add("response", somethingint.task.ToString().Length);
                         }
                     }
                 }
@@ -249,7 +270,9 @@ namespace httpclientMessage
                         var ResponContent = respone.Content;
                         string responseString = ResponContent.ReadAsStringAsync().Result;
                         Console.WriteLine("Ответ: {0}", responseString);
-                        something = JsonConvert.DeserializeObject<JSON>(responseString);
+                        somethingint = JsonConvert.DeserializeObject<JSONint>(responseString);
+                        somethingType = JsonConvert.DeserializeObject<JSONtype>(responseString);
+                        // somethingstring = JsonConvert.DeserializeObject<JSONstring>(responseString);
                         //Console.WriteLine("{0}, {1}", something.task[0], something.task[1]);
                     }
                 }
