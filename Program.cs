@@ -8,6 +8,10 @@ using System.Text;
 
 namespace httpclientMessage
 {
+    public class KOSTILI
+    {
+
+    }
     public class JSONstring
     {
         public int type { get; set; }
@@ -24,6 +28,7 @@ namespace httpclientMessage
         public int type { get; set; }
         public string description { get; set; }
         public List<int> task { get; set; }
+        
     }
     class Request
     {
@@ -216,13 +221,13 @@ namespace httpclientMessage
         }*/
         static async void request3()
         {
-            JSONint somethingint;
+            JSONint somethingInt;
             JSONtype somethingType;
-            //JSONstring somethingstring;
-            for (int a = 0; a < 49; a++)
+            JSONstring somethingString;
+            for (int a = 0; a < 45; a++)
             {
                 int x = 0;
-                Dictionary<string, int> diction = new Dictionary<string, int>();
+                Dictionary<string, dynamic> diction = new Dictionary<string, dynamic>();
                 diction.Add("request", a);
                 using (var client = new HttpClient())
                 {
@@ -234,28 +239,43 @@ namespace httpclientMessage
                     {
                         var ResponContent = respone.Content;
                         string responseString = ResponContent.ReadAsStringAsync().Result;
+                        Console.WriteLine();
                         Console.WriteLine("Ответ: {0}", responseString);
-                        somethingint = JsonConvert.DeserializeObject<JSONint>(responseString);
+                        
                         somethingType = JsonConvert.DeserializeObject<JSONtype>(responseString);
-                        //somethingstring = JsonConvert.DeserializeObject<JSONstring>(responseString);
-
-                        Console.WriteLine(somethingType.type);
-                        //Console.WriteLine("{0}, {1}", something.task[0], something.task[1]);
-                        if (somethingType.type == 1)
+                        
+                        
+                        if (somethingType.type == 1 || somethingType.type == 2 || somethingType.type == 4)
                         {
-                            diction.Add("response", somethingint.task[0] + somethingint.task[1]);
-                        }
-                        else if (somethingType.type == 2)
-                        {
-                            foreach (int list in somethingint.task)
+                            somethingInt = JsonConvert.DeserializeObject<JSONint>(responseString);
+                            if (somethingType.type == 1)
                             {
-                                x = list + x;
+
+                                diction.Add("response", somethingInt.task[0] + somethingInt.task[1]);
+                                
                             }
-                            diction.Add("response", x);
+                            else if (somethingType.type == 2)
+                            {
+                                foreach (int list in somethingInt.task)
+                                {
+                                    x = list + x;
+                                }
+                                diction.Add("response", x);
+                            }
+                            else if (somethingType.type == 4)
+                            {
+                                var anser = new Dictionary<string, int>();
+                                anser.Add("a", somethingInt.task[0]);
+                                anser.Add("b", somethingInt.task[1]);
+                                diction.Add("response", anser);
+                            }
                         }
                         else if (somethingType.type == 3)
                         {
-                            diction.Add("response", somethingint.task.ToString().Length);
+                            somethingString = JsonConvert.DeserializeObject<JSONstring>(responseString);
+                            Console.WriteLine();
+                            Console.WriteLine("Количество символов {0}", somethingString.task.ToString().Length);
+                            diction.Add("response", somethingString.task.ToString().Length);
                         }
                     }
                 }
@@ -268,12 +288,9 @@ namespace httpclientMessage
                     if (respone.IsSuccessStatusCode)
                     {
                         var ResponContent = respone.Content;
-                        string responseString = ResponContent.ReadAsStringAsync().Result;
+                        string responseString = ResponContent.ReadAsStringAsync().Result; 
                         Console.WriteLine("Ответ: {0}", responseString);
-                        somethingint = JsonConvert.DeserializeObject<JSONint>(responseString);
-                        somethingType = JsonConvert.DeserializeObject<JSONtype>(responseString);
-                        // somethingstring = JsonConvert.DeserializeObject<JSONstring>(responseString);
-                        //Console.WriteLine("{0}, {1}", something.task[0], something.task[1]);
+
                     }
                 }
             }
