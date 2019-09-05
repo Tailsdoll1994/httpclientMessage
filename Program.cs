@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Numerics;
 using System.Text;
 
 namespace httpclientMessage
@@ -89,7 +86,7 @@ namespace httpclientMessage
             }
             Console.ReadKey();
         }
-        //https://metanit.com/sharp/tutorial/13.3.php опредление что такое ансихроность 
+        // https://metanit.com/sharp/tutorial/13.3.php опредление что такое ансихроность 
 
         // async слуужит для упрощения написание асинхронного кода/используются для создания асинхронного метода
         static async void request3()
@@ -115,7 +112,6 @@ namespace httpclientMessage
                 //1. Отправка числого запроса
                 //2. Так ссылка определяет кол-во решеных пример и на основе этого, отправляет новую задачу
                 diction.Add("request", a);
-                //using (var client = new HttpClient())
 
                 // Объявление локальной переменой httpclient
                 var client = new HttpClient();
@@ -209,12 +205,12 @@ namespace httpclientMessage
                         //1. Объявление значение переменой 
                         //2. Вписываем в конструктор переменую указанаю в цикле for (request), и так же ответ в виде словаря (response)
                         diction2 = new Response(a, anser);
+
                         // Проводится сериализация словаря
                         json = JsonConvert.SerializeObject(diction2);
                     }
                 }
 
-                //using (var client1 = new HttpClient())
                 // Если somethingType НЕ равен 4 задаче
                 if (somethingType.type != 4)
                 {
